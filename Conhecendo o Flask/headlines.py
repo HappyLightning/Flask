@@ -1,6 +1,7 @@
 import feedparser  # Utiliza RSS.
 from flask import Flask
 from flask import render_template
+from flask import request
 
 
 app = Flask(__name__)
@@ -10,9 +11,13 @@ RSS_FEEDS = {'nasa': 'https://www.nasa.gov/rss/dyn/Gravity-Assist.rss',
              }
 
 
-@app.route('/')
-@app.route('/<publication>')  # Nome de cada FEED.
-def get_news(publication='nasa'):  # Passamos Nasa como padrão em '/'.
+@app.route('/', methods=['GET', 'POST'])
+def get_news():
+    query = request.form.get('publication')
+    if not query or query.lower() not in RSS_FEEDS:
+        publication = 'nasa'
+    else:
+        publication = query.lower()
     feed = feedparser.parse(RSS_FEEDS[publication])
     return render_template('home.html', articles=feed['entries'])
 

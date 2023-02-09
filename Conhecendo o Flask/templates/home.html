@@ -6,6 +6,10 @@
     </head>
     <body>
         <h1>Headlines</h1>
+        <form action="/" method="POST">
+            <input type="text" name="publication" placeholder="pesquisar">
+            <input type="submit" value="Ir">
+        </form>
         {% for article in articles %}
             <b><a href="{{article.link }}">{{ article.title }}</a></b><br />
             <i>{{ article.published }}</i><br />
